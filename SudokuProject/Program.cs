@@ -16,7 +16,7 @@ namespace SudokuProject.SudokuProject
             foreach(int num in randomNumArr)
                 Console.Write(num+" ");
             Console.WriteLine();
-            sudoku.SudokuCreate(10);
+            sudoku.SudokuCreate(1000);
             Console.WriteLine("Finish");
         }
     }

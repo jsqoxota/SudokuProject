@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -31,10 +32,10 @@ namespace SudokuProject.SudokuProject
         //  {0, 0, 0, 0, 0, 0, 4, 7, 8},
         //  {0, 0, 0, 0, 0, 0, 9, 2, 1},
         //  {0, 0, 0, 0, 0, 0, 3, 5, 6} };
-        #endregion
+    #endregion
 
-        //XLocation和YLocation数组的指针
-        int location = 0;
+    //XLocation和YLocation数组的指针
+    int location = 0;
         //小九宫格位置上限
         int maxXL;
         int maxYL;
@@ -58,17 +59,17 @@ namespace SudokuProject.SudokuProject
                 Y.Add(new List<int>());
             }
             AddZ1Num();
-            AddZNum();
+            //AddZNum();
 
             #region Test
-            //for (int i = 0; i < 81; i++)
-            //{
-            //    if (sudoku[i % 9, i / 9] != 0)
-            //    {
-            //        X[i % 9].Add(sudoku[i / 9, i % 9]);
-            //        Y[i / 9].Add(sudoku[i / 9, i % 9]);
-            //    }
-            //}
+            for (int i = 0; i < 81; i++)
+            {
+                if (sudoku[i % 9, i / 9] != 0)
+                {
+                    X[i % 9].Add(sudoku[i / 9, i % 9]);
+                    Y[i / 9].Add(sudoku[i / 9, i % 9]);
+                }
+            }
             #endregion
 
             AddNineNum();
@@ -86,25 +87,13 @@ namespace SudokuProject.SudokuProject
             int[] randomNumArr = randomNum.GetRandomNum(value, 9);
             for (int i = 5, z = 8; i >= 3; i--)
                 for (int j = 5; j >= 3 && z >= 0; j--, z--)
-                {
                     sudoku[j, i] = randomNumArr[z];
-                    X[i].Add(randomNumArr[z]);
-                    if (j == 2) Y[2].Add(randomNumArr[z]);
-                    if (j == 1) Y[1].Add(randomNumArr[z]);
-                    if (j == 0) Y[0].Add(randomNumArr[z]);
-                }
             Console.ReadLine();
             value = new int[9] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             randomNumArr = randomNum.GetRandomNum(value, 9);
             for (int i = 8, z = 8; i >= 6; i--)
                 for (int j = 8; j >= 6 && z >= 0; j--, z--)
-                {
                     sudoku[j, i] = randomNumArr[z];
-                    X[i].Add(randomNumArr[z]);
-                    if (j == 2) Y[2].Add(randomNumArr[z]);
-                    if (j == 1) Y[1].Add(randomNumArr[z]);
-                    if (j == 0) Y[0].Add(randomNumArr[z]);
-                }
         }
 
         /// <summary>
@@ -124,10 +113,10 @@ namespace SudokuProject.SudokuProject
                 for (int j = 2; j >= 0 && z >= 0; j--, z--)
                 {
                     sudoku[j, i] = randomNumArr[z];
-                    X[i].Add(randomNumArr[z]);
-                    if (j == 2) Y[2].Add(randomNumArr[z]);
-                    if (j == 1) Y[1].Add(randomNumArr[z]);
-                    if (j == 0) Y[0].Add(randomNumArr[z]);
+                    //X[i].Add(randomNumArr[z]);
+                    //if (j == 2) Y[2].Add(randomNumArr[z]);
+                    //if (j == 1) Y[1].Add(randomNumArr[z]);
+                    //if (j == 0) Y[0].Add(randomNumArr[z]);
                 }
             }
         }
@@ -141,7 +130,7 @@ namespace SudokuProject.SudokuProject
             if (location == 6)
             {
                 n++;
-                PrintResultConsole();
+                PrintResultFile();
                 return;
             }
             //PrintResult();
@@ -209,6 +198,50 @@ namespace SudokuProject.SudokuProject
                 for (int j = 0; j < 9; j++)
                     Console.Write(sudoku[i, j] + " ");
                 Console.WriteLine();
+            }
+        }
+
+        /// <summary>
+        /// File输出
+        /// </summary>
+        public void PrintResultFile()
+        {
+            try
+            {
+                if (n == 1)
+                {
+                    FileStream f = new FileStream("sudoku.txt", FileMode.Create, FileAccess.Write);
+                    StreamWriter sw = new StreamWriter(f);
+                    for (int i = 0; i < 9; i++)
+                    {
+                        for (int j = 0; j < 9; j++)
+                            sw.Write(sudoku[i, j] + " ");
+                        sw.WriteLine();
+                    }
+                    sw.WriteLine();
+                    sw.Flush();
+                    sw.Close();
+                    f.Close();
+                }
+                else
+                {
+                    FileStream f = new FileStream("sudoku.txt", FileMode.Append, FileAccess.Write);
+                    StreamWriter sw = new StreamWriter(f);
+                    for (int i = 0; i < 9; i++)
+                    {
+                        for (int j = 0; j < 9; j++)
+                            sw.Write(sudoku[i, j] + " ");
+                        sw.WriteLine();
+                    }
+                    sw.WriteLine();
+                    sw.Flush();
+                    sw.Close();
+                    f.Close();
+                }
+            }
+            catch(IOException e)
+            {
+                throw e;
             }
         }
     }

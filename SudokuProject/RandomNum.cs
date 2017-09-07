@@ -7,6 +7,12 @@ namespace SudokuProject.SudokuProject
 {
     class RandomNum
     {
+        /// <summary>
+        /// 随机序列生成
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="num"></param>
+        /// <returns></returns>
         public int[] GetRandomNum(int[] value,int num)
         {
             Random randomNum = new Random();

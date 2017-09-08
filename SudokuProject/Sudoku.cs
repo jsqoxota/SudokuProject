@@ -15,16 +15,15 @@ namespace SudokuProject.SudokuProject
         List<int> exceptYNum;//除去水平方向 剩余的数
         List<int> remainNum;//未使用的数
 
-        //小九宫格 首格坐标 6个
-        //int[] XLocation = new int[6] { 3, 6, 0, 6, 0, 3 };//水平方向
-        //int[] YLocation = new int[6] { 0, 0, 3, 3, 6, 6 };//垂直方向 
-
         //小九宫格 首格坐标 8个
         int[] XLocation = new int[8] { 3, 6, 0, 3, 6, 0, 3, 6 };//水平方向
         int[] YLocation = new int[8] { 0, 0, 3, 3, 3, 6, 6, 6 };//垂直方向 
 
         //需填充小九宫格数量
         int littleSudokuNum = 8;
+
+        //首位数字
+        int firstNum = 5;
         
         //数独 9*9
         int[,] sudoku = new int[9, 9];
@@ -69,7 +68,6 @@ namespace SudokuProject.SudokuProject
                 Y.Add(new List<int>());
             }
             AddZ1Num();
-            //AddZNum();
 
             for (int i = 0; i < 81; i++)
             {
@@ -88,7 +86,7 @@ namespace SudokuProject.SudokuProject
         }
 
         /// <summary>
-        /// 添加Z5和Z9的数据
+        /// 随机填充小九宫格数据
         /// </summary>
         /// <param name="sudoku"></param>
         private void AddZNum()
@@ -99,12 +97,6 @@ namespace SudokuProject.SudokuProject
             for (int i = 5, z = 8; i >= 3; i--)
                 for (int j = 5; j >= 3 && z >= 0; j--, z--)
                     sudoku[j, i] = randomNumArr[z];
-            Console.ReadLine();
-            value = new int[9] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-            randomNumArr = randomNum.GetRandomNum(value, 9);
-            for (int i = 8, z = 8; i >= 6; i--)
-                for (int j = 8; j >= 6 && z >= 0; j--, z--)
-                    sudoku[j, i] = randomNumArr[z];
         }
 
         /// <summary>
@@ -113,9 +105,7 @@ namespace SudokuProject.SudokuProject
         /// <param name="sudoku"></param>
         public void AddZ1Num()
         {
-            sudoku[0, 0] = 5;
-            X[0].Add(5);
-            Y[0].Add(5);
+            sudoku[0, 0] = firstNum;
             RandomNum randomNum = new RandomNum();
             int[] value = new int[8] { 1, 2, 3, 4, 6, 7, 8, 9 };
             int[] randomNumArr = randomNum.GetRandomNum(value, 8);
@@ -147,7 +137,7 @@ namespace SudokuProject.SudokuProject
             maxXL = XLocation[location] + 3;
             temp = Z;
             Z = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-            exceptYNum = Z.Except(Y[YLocation[location]]).ToList();
+            exceptYNum = Except(Z,Y[YLocation[location]]);//Z.Except(Y[YLocation[location]]).ToList();
             AddOneNum(XLocation[location], YLocation[location], exceptYNum);
             Z = temp;
             maxYL = a;
@@ -163,7 +153,7 @@ namespace SudokuProject.SudokuProject
         public void AddOneNum(int x, int y,List<int> exceptYNum)
         {
             if (n >= N) return;
-            remainNum = exceptYNum.Except(X[x]).ToList();
+            remainNum = Except(exceptYNum,X[x]);
             foreach(int i in remainNum)
             {
                 count++;
@@ -173,8 +163,8 @@ namespace SudokuProject.SudokuProject
                 Y[y].Add(i);
                 Z.Remove(i);
                 if (x + 1 < maxXL) AddOneNum(x + 1, y, exceptYNum);
-                else if (y + 1 < maxYL && Z.Except(Y[y + 1]).ToList().Count >= 3)
-                    AddOneNum(x - 2, y + 1, Z.Except(Y[y + 1]).ToList());
+                else if (y + 1 < maxYL && Except(Z,Y[y + 1]).Count >= 3)
+                    AddOneNum(x - 2, y + 1, Except(Z,Y[y + 1]));
                 if (count == 9)
                 {
                     count = 0;
@@ -226,6 +216,20 @@ namespace SudokuProject.SudokuProject
             {
                 throw e;
             }
+        }
+
+        /// <summary>
+        /// 差集
+        /// </summary>
+        /// <param name="A"></param>
+        /// <param name="B"></param>
+        /// <returns></returns>
+        public List<int> Except(List<int>A ,List<int> B)
+        {
+            List<int> result = new List<int>(A);
+            foreach (int i in B)
+                result.Remove(i);
+            return result;
         }
     }
 }

@@ -15,10 +15,17 @@ namespace SudokuProject.SudokuProject
         List<int> exceptYNum;//除去水平方向 剩余的数
         List<int> remainNum;//未使用的数
 
-        //小九宫格 首格坐标
-        int[] XLocation = new int[6] { 3, 6, 0, 6, 0, 3 };//水平方向
-        int[] YLocation = new int[6] { 0, 0, 3, 3, 6, 6 };//垂直方向 
+        //小九宫格 首格坐标 6个
+        //int[] XLocation = new int[6] { 3, 6, 0, 6, 0, 3 };//水平方向
+        //int[] YLocation = new int[6] { 0, 0, 3, 3, 6, 6 };//垂直方向 
 
+        //小九宫格 首格坐标 8个
+        int[] XLocation = new int[8] { 3, 6, 0, 3, 6, 0, 3, 6 };//水平方向
+        int[] YLocation = new int[8] { 0, 0, 3, 3, 3, 6, 6, 6 };//垂直方向 
+
+        //需填充小九宫格数量
+        int littleSudokuNum = 8;
+        
         //数独 9*9
         int[,] sudoku = new int[9, 9];
 
@@ -32,10 +39,10 @@ namespace SudokuProject.SudokuProject
         //  {0, 0, 0, 0, 0, 0, 4, 7, 8},
         //  {0, 0, 0, 0, 0, 0, 9, 2, 1},
         //  {0, 0, 0, 0, 0, 0, 3, 5, 6} };
-    #endregion
+        #endregion
 
-    //XLocation和YLocation数组的指针
-    int location = 0;
+        //XLocation和YLocation数组的指针
+        int location = 0;
         //小九宫格位置上限
         int maxXL;
         int maxYL;
@@ -61,7 +68,6 @@ namespace SudokuProject.SudokuProject
             AddZ1Num();
             //AddZNum();
 
-            #region Test
             for (int i = 0; i < 81; i++)
             {
                 if (sudoku[i % 9, i / 9] != 0)
@@ -70,10 +76,7 @@ namespace SudokuProject.SudokuProject
                     Y[i / 9].Add(sudoku[i / 9, i % 9]);
                 }
             }
-            #endregion
-
             AddNineNum();
-            Console.WriteLine();
         }
 
         /// <summary>
@@ -111,13 +114,7 @@ namespace SudokuProject.SudokuProject
             for (int i = 2, z = 7; i >= 0; i--)
             {
                 for (int j = 2; j >= 0 && z >= 0; j--, z--)
-                {
                     sudoku[j, i] = randomNumArr[z];
-                    //X[i].Add(randomNumArr[z]);
-                    //if (j == 2) Y[2].Add(randomNumArr[z]);
-                    //if (j == 1) Y[1].Add(randomNumArr[z]);
-                    //if (j == 0) Y[0].Add(randomNumArr[z]);
-                }
             }
         }
 
@@ -127,7 +124,7 @@ namespace SudokuProject.SudokuProject
         public void AddNineNum()
         {
             if (n >= N) return;
-            if (location == 6)
+            if (location == littleSudokuNum)
             {
                 n++;
                 PrintResultFile();

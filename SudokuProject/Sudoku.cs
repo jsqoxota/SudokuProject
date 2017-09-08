@@ -51,7 +51,10 @@ namespace SudokuProject.SudokuProject
         //目标数量
         int N;
         //完成数量
-        int n = 0; 
+        int n = 0;
+
+        FileStream f;
+        StreamWriter sw;
 
         /// <summary>
         /// 产生终盘
@@ -76,7 +79,12 @@ namespace SudokuProject.SudokuProject
                     Y[i / 9].Add(sudoku[i / 9, i % 9]);
                 }
             }
+
+            f = new FileStream("sudoku.txt", FileMode.Create, FileAccess.Write);
+            sw = new StreamWriter(f);
             AddNineNum();
+            sw.Close();
+            f.Close();
         }
 
         /// <summary>
@@ -205,38 +213,16 @@ namespace SudokuProject.SudokuProject
         {
             try
             {
-                if (n == 1)
+                for (int i = 0; i < 9; i++)
                 {
-                    FileStream f = new FileStream("sudoku.txt", FileMode.Create, FileAccess.Write);
-                    StreamWriter sw = new StreamWriter(f);
-                    for (int i = 0; i < 9; i++)
-                    {
-                        for (int j = 0; j < 9; j++)
-                            sw.Write(sudoku[i, j] + " ");
-                        sw.WriteLine();
-                    }
+                    for (int j = 0; j < 9; j++)
+                        sw.Write(sudoku[i, j] + " ");
                     sw.WriteLine();
-                    sw.Flush();
-                    sw.Close();
-                    f.Close();
                 }
-                else
-                {
-                    FileStream f = new FileStream("sudoku.txt", FileMode.Append, FileAccess.Write);
-                    StreamWriter sw = new StreamWriter(f);
-                    for (int i = 0; i < 9; i++)
-                    {
-                        for (int j = 0; j < 9; j++)
-                            sw.Write(sudoku[i, j] + " ");
-                        sw.WriteLine();
-                    }
-                    sw.WriteLine();
-                    sw.Flush();
-                    sw.Close();
-                    f.Close();
-                }
+                sw.WriteLine();
+                sw.Flush();
             }
-            catch(IOException e)
+            catch (IOException e)
             {
                 throw e;
             }

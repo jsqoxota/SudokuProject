@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SudokuProject.SudokuProject
 {
-    class Sudoku
+    public class Sudoku
     {
         //数据存储
         List<List<int>> X = new List<List<int>>();//垂直
@@ -128,7 +128,6 @@ namespace SudokuProject.SudokuProject
                 PrintResultFile();
                 return;
             }
-            //PrintResult();
             List<int> temp;
             int a, b;
             a = maxYL;
@@ -174,8 +173,8 @@ namespace SudokuProject.SudokuProject
                     count = 9;
                 }
                 Z.Add(i);
-                X[x].Remove(i);
-                Y[y].Remove(i);
+                X[x].RemoveAt(X[x].Count - 1);
+                Y[y].RemoveAt(Y[y].Count - 1);
                 exceptYNum.Add(i);
                 sudoku[y, x] = 0;
                 count--;
@@ -230,6 +229,30 @@ namespace SudokuProject.SudokuProject
             foreach (int i in B)
                 result.Remove(i);
             return result;
+        }
+
+        /// <summary>
+        /// 返回数独
+        /// </summary>
+        /// <returns></returns>
+        public int[,] getSudoku()
+        {
+            FileStream fr = new FileStream("sudoku.txt", FileMode.Open, FileAccess.Read);
+            StreamReader sr = new StreamReader(fr);
+
+            for (int i = 0; i < 81;)
+            {
+                char num = (char)sr.Read();
+                if (num > 47 && num < 58)
+                {
+                    sudoku[i / 9, i % 9] = num - 48;
+                    i++;
+                }
+            }
+
+            sr.Close();
+            fr.Close();
+            return sudoku;
         }
     }
 }

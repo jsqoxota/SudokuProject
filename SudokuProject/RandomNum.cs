@@ -18,7 +18,7 @@ namespace SudokuProject.SudokuProject
             Random randomNum = new Random();
             int[] resultNums = new int[num];
             int temp = 0;
-            int nums = num;
+            int nums = value.Length;
             for(int i = 0;i < num; i++)
             {
                 temp = randomNum.Next(0, nums - 1);

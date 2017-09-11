@@ -19,14 +19,17 @@ namespace SudokuProject.SudokuProject
         int[] XLocation = new int[8] { 3, 6, 0, 3, 6, 0, 3, 6 };//水平方向
         int[] YLocation = new int[8] { 0, 0, 3, 3, 3, 6, 6, 6 };//垂直方向 
 
+        int[] changes = new int[8] { 1, 2, 3, 4, 6, 7, 8, 9 };
+
         //需填充小九宫格数量
         int littleSudokuNum = 8;
 
         //首位数字
         int firstNum = 5;
-        
+
         //数独 9*9
         int[,] sudoku = new int[9, 9];
+        int[,] sudoku2 = new int[9, 9];
 
         #region Test
         //{ {5, 6, 7, 0, 0, 0, 0, 0, 0},
@@ -126,6 +129,8 @@ namespace SudokuProject.SudokuProject
             {
                 n++;
                 PrintResultFile();
+                if (n >= N) return;
+                change();
                 return;
             }
             List<int> temp;
@@ -136,7 +141,7 @@ namespace SudokuProject.SudokuProject
             maxXL = XLocation[location] + 3;
             temp = Z;
             Z = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-            exceptYNum = Except(Z,Y[YLocation[location]]);//Z.Except(Y[YLocation[location]]).ToList();
+            exceptYNum = Except(Z, Y[YLocation[location]]);//Z.Except(Y[YLocation[location]]).ToList();
             AddOneNum(XLocation[location], YLocation[location], exceptYNum);
             Z = temp;
             maxYL = a;
@@ -149,11 +154,11 @@ namespace SudokuProject.SudokuProject
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="exceptYNum"></param>
-        public void AddOneNum(int x, int y,List<int> exceptYNum)
+        public void AddOneNum(int x, int y, List<int> exceptYNum)
         {
             if (n >= N) return;
-            remainNum = Except(exceptYNum,X[x]);
-            foreach(int i in remainNum)
+            remainNum = Except(exceptYNum, X[x]);
+            foreach (int i in remainNum)
             {
                 count++;
                 sudoku[y, x] = i;
@@ -162,8 +167,8 @@ namespace SudokuProject.SudokuProject
                 Y[y].Add(i);
                 Z.Remove(i);
                 if (x + 1 < maxXL) AddOneNum(x + 1, y, exceptYNum);
-                else if (y + 1 < maxYL && Except(Z,Y[y + 1]).Count >= 3)
-                    AddOneNum(x - 2, y + 1, Except(Z,Y[y + 1]));
+                else if (y + 1 < maxYL && Except(Z, Y[y + 1]).Count >= 3)
+                    AddOneNum(x - 2, y + 1, Except(Z, Y[y + 1]));
                 if (count == 9)
                 {
                     count = 0;
@@ -223,7 +228,7 @@ namespace SudokuProject.SudokuProject
         /// <param name="A"></param>
         /// <param name="B"></param>
         /// <returns></returns>
-        public List<int> Except(List<int>A ,List<int> B)
+        public List<int> Except(List<int> A, List<int> B)
         {
             List<int> result = new List<int>(A);
             foreach (int i in B)
@@ -254,5 +259,82 @@ namespace SudokuProject.SudokuProject
             fr.Close();
             return sudoku;
         }
+
+        /// <summary>
+        /// 矩阵变化
+        /// </summary>
+        public void change()
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    if (j == 3) sw.Write(sudoku[i, j + 2] + " ");
+                    else if (j == 5) sw.Write(sudoku[i, j - 2] + " ");
+                    else sw.Write(sudoku[i, j] + " ");
+                }
+                sw.WriteLine();
+            }
+            sw.WriteLine();
+            sw.Flush();
+            n++;
+            if (n >= N) return;
+
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    if (j == 6) sw.Write(sudoku[i, j + 2] + " ");
+                    else if (j == 8) sw.Write(sudoku[i, j - 2] + " ");
+                    else sw.Write(sudoku[i, j] + " ");
+                }
+                sw.WriteLine();
+            }
+            sw.WriteLine();
+            sw.Flush();
+            n++;
+            if (n >= N) return;
+
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    if (i == 3) sw.Write(sudoku[i + 2, j] + " ");
+                    else if (i == 5) sw.Write(sudoku[i - 2, j] + " ");
+                    else sw.Write(sudoku[i, j] + " ");
+                }
+                sw.WriteLine();
+            }
+            sw.WriteLine();
+            sw.Flush();
+            n++;
+            if (n >= N) return;
+
+            for (int i = 0; i < 7; i++)
+            {
+                for (int j = i + 1; j < 8; j++)
+                {
+                    int aNum = changes[i];
+                    int bNum = changes[j];
+                    for (int x = 0; x < 9; x++)
+                    {
+                        for (int y = 0; y < 9; y++)
+                        {
+                            if (sudoku[x, y] == aNum) sw.Write(bNum + " ");
+                            else if (sudoku[x, y] == bNum) sw.Write(aNum + " ");
+                            else sw.Write(sudoku[x, y] + " ");
+                        }
+                        sw.WriteLine();
+                    }
+                    sw.WriteLine();
+                    sw.Flush();
+                    n++;
+                    if (n >= N) return;
+                }
+            }
+
+        }
+
+
     }
 }

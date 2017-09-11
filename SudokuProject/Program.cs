@@ -17,6 +17,8 @@ namespace SudokuProject.SudokuProject
             //    Console.Write(num+" ");
             //Console.WriteLine();
 
+            //sudoku.SudokuCreate(1);
+
             if (args.Length != 2 || args[0] != "-c")
             {
                 Console.WriteLine("error:请参考以下格式进行输入;");

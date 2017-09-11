@@ -210,8 +210,12 @@ namespace SudokuProject.SudokuProject
                 for (int i = 0; i < 9; i++)
                 {
                     for (int j = 0; j < 9; j++)
-                        sw.Write(sudoku[i, j] + " ");
+                    {
+                        sw.Write(sudoku[i, j]);
+                        sw.Write(" ");
+                    }
                     sw.WriteLine();
+                    
                 }
                 sw.WriteLine();
                 sw.Flush();
@@ -269,9 +273,10 @@ namespace SudokuProject.SudokuProject
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    if (j == 3) sw.Write(sudoku[i, j + 2] + " ");
-                    else if (j == 5) sw.Write(sudoku[i, j - 2] + " ");
-                    else sw.Write(sudoku[i, j] + " ");
+                    if (j == 3) sw.Write(sudoku[i, j + 2]);
+                    else if (j == 5) sw.Write(sudoku[i, j - 2]);
+                    else sw.Write(sudoku[i, j]);
+                    sw.Write(" ");
                 }
                 sw.WriteLine();
             }
@@ -284,9 +289,10 @@ namespace SudokuProject.SudokuProject
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    if (j == 6) sw.Write(sudoku[i, j + 2] + " ");
-                    else if (j == 8) sw.Write(sudoku[i, j - 2] + " ");
-                    else sw.Write(sudoku[i, j] + " ");
+                    if (j == 6) sw.Write(sudoku[i, j + 2]);
+                    else if (j == 8) sw.Write(sudoku[i, j - 2]);
+                    else sw.Write(sudoku[i, j]);
+                    sw.Write(" ");
                 }
                 sw.WriteLine();
             }
@@ -299,9 +305,10 @@ namespace SudokuProject.SudokuProject
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    if (i == 3) sw.Write(sudoku[i + 2, j] + " ");
-                    else if (i == 5) sw.Write(sudoku[i - 2, j] + " ");
-                    else sw.Write(sudoku[i, j] + " ");
+                    if (i == 3) sw.Write(sudoku[i + 2, j]);
+                    else if (i == 5) sw.Write(sudoku[i - 2, j]);
+                    else sw.Write(sudoku[i, j]);
+                    sw.Write(" ");
                 }
                 sw.WriteLine();
             }
@@ -320,9 +327,10 @@ namespace SudokuProject.SudokuProject
                     {
                         for (int y = 0; y < 9; y++)
                         {
-                            if (sudoku[x, y] == aNum) sw.Write(bNum + " ");
-                            else if (sudoku[x, y] == bNum) sw.Write(aNum + " ");
-                            else sw.Write(sudoku[x, y] + " ");
+                            if (sudoku[x, y] == aNum) sw.Write(bNum);
+                            else if (sudoku[x, y] == bNum) sw.Write(aNum);
+                            else sw.Write(sudoku[x, y]);
+                            sw.Write(" ");
                         }
                         sw.WriteLine();
                     }

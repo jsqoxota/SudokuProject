@@ -17,7 +17,7 @@ namespace SudokuProject.SudokuProject
             //    Console.Write(num+" ");
             //Console.WriteLine();
 
-            //sudoku.SudokuCreate(1);
+            //sudoku.SudokuCreate(1000000);
 
             if (args.Length != 2 || args[0] != "-c")
             {
@@ -41,5 +41,5 @@ namespace SudokuProject.SudokuProject
             }
             else Console.WriteLine("error:请输入正整数");
         }
+        }
     }
-}

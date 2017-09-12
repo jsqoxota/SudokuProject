@@ -83,6 +83,7 @@ namespace SudokuProject.SudokuProject
 
             f = new FileStream("sudoku.txt", FileMode.Create, FileAccess.Write);
             sw = new StreamWriter(f);
+
             AddNineNum();
             sw.Close();
             f.Close();
@@ -207,18 +208,21 @@ namespace SudokuProject.SudokuProject
         {
             try
             {
+                int t = 0;
+                byte[] by = new byte[200];
                 for (int i = 0; i < 9; i++)
                 {
                     for (int j = 0; j < 9; j++)
                     {
-                        sw.Write(sudoku[i, j]);
-                        sw.Write(" ");
+                        by[t++] = (byte)(sudoku[i, j] + 48);
+                        by[t++] = (byte)' ';
                     }
-                    sw.WriteLine();
-                    
+                    by[t++] = (byte)'\r';
+                    by[t++] = (byte)'\n';
                 }
-                sw.WriteLine();
-                sw.Flush();
+                by[t++] = (byte)'\r';
+                by[t++] = (byte)'\n';
+                f.Write(by, 0, t);
             }
             catch (IOException e)
             {
@@ -269,51 +273,61 @@ namespace SudokuProject.SudokuProject
         /// </summary>
         public void change()
         {
+            int t = 0;
+            byte[] by = new byte[200];
             for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    if (j == 3) sw.Write(sudoku[i, j + 2]);
-                    else if (j == 5) sw.Write(sudoku[i, j - 2]);
-                    else sw.Write(sudoku[i, j]);
-                    sw.Write(" ");
+                    if (j == 3) by[t++] = (byte)(sudoku[i, j + 2] + 48);
+                    else if (j == 5) by[t++] = (byte)(sudoku[i, j - 2] + 48);
+                    else by[t++] = (byte)(sudoku[i, j]+48);
+                    by[t++] = (byte)' ';
                 }
-                sw.WriteLine();
+                by[t++] = (byte)'\r';
+                by[t++] = (byte)'\n';
             }
-            sw.WriteLine();
-            sw.Flush();
+            by[t++] = (byte)'\r';
+            by[t++] = (byte)'\n';
+            f.Write(by, 0, t);
             n++;
             if (n >= N) return;
 
+            t = 0;
             for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    if (j == 6) sw.Write(sudoku[i, j + 2]);
-                    else if (j == 8) sw.Write(sudoku[i, j - 2]);
-                    else sw.Write(sudoku[i, j]);
-                    sw.Write(" ");
+                    if (j == 6) by[t++] = (byte)(sudoku[i, j + 2] + 48);
+                    else if (j == 8) by[t++] = (byte)(sudoku[i, j - 2] + 48);
+                    else by[t++] = (byte)(sudoku[i, j] + 48);
+                    by[t++] = (byte)' ';
                 }
-                sw.WriteLine();
+                by[t++] = (byte)'\r';
+                by[t++] = (byte)'\n';
             }
-            sw.WriteLine();
-            sw.Flush();
+            by[t++] = (byte)'\r';
+            by[t++] = (byte)'\n';
+            f.Write(by, 0, t);
             n++;
             if (n >= N) return;
 
+            t = 0;
             for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    if (i == 3) sw.Write(sudoku[i + 2, j]);
-                    else if (i == 5) sw.Write(sudoku[i - 2, j]);
-                    else sw.Write(sudoku[i, j]);
-                    sw.Write(" ");
+                    if (i == 3) by[t++] = (byte)(sudoku[i + 2, j] + 48);
+                    else if (i == 5) by[t++] = (byte)(sudoku[i - 2, j] + 48);
+                    else by[t++] = (byte)(sudoku[i, j] + 48);
+                    by[t++] = (byte)' ';
                 }
-                sw.WriteLine();
+                by[t++] = (byte)'\r';
+                by[t++] = (byte)'\n';
             }
-            sw.WriteLine();
-            sw.Flush();
+            by[t++] = (byte)'\r';
+            by[t++] = (byte)'\n';
+            f.Write(by, 0, t);
             n++;
             if (n >= N) return;
 
@@ -321,21 +335,24 @@ namespace SudokuProject.SudokuProject
             {
                 for (int j = i + 1; j < 8; j++)
                 {
+                    t = 0;
                     int aNum = changes[i];
                     int bNum = changes[j];
                     for (int x = 0; x < 9; x++)
                     {
                         for (int y = 0; y < 9; y++)
                         {
-                            if (sudoku[x, y] == aNum) sw.Write(bNum);
-                            else if (sudoku[x, y] == bNum) sw.Write(aNum);
-                            else sw.Write(sudoku[x, y]);
-                            sw.Write(" ");
+                            if (sudoku[x, y] == aNum) by[t++] = (byte)(bNum+48);
+                            else if (sudoku[x, y] == bNum) by[t++] = (byte)(aNum +48);
+                            else by[t++] = (byte)(sudoku[x, y]+48);
+                            by[t++] = (byte)' ';
                         }
-                        sw.WriteLine();
+                        by[t++] = (byte)'\r';
+                        by[t++] = (byte)'\n';
                     }
-                    sw.WriteLine();
-                    sw.Flush();
+                    by[t++] = (byte)'\r';
+                    by[t++] = (byte)'\n';
+                    f.Write(by, 0, t);
                     n++;
                     if (n >= N) return;
                 }

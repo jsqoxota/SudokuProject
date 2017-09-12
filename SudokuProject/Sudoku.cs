@@ -231,6 +231,35 @@ namespace SudokuProject.SudokuProject
         }
 
         /// <summary>
+        /// File输出2
+        /// </summary>
+        public void PrintResultFile2()
+        {
+            try
+            {
+                int t = 0;
+                byte[] by = new byte[200];
+                for (int i = 0; i < 9; i++)
+                {
+                    for (int j = 0; j < 9; j++)
+                    {
+                        by[t++] = (byte)(sudoku2[i, j] + 48);
+                        by[t++] = (byte)' ';
+                    }
+                    by[t++] = (byte)'\r';
+                    by[t++] = (byte)'\n';
+                }
+                by[t++] = (byte)'\r';
+                by[t++] = (byte)'\n';
+                f.Write(by, 0, t);
+            }
+            catch (IOException e)
+            {
+                throw e;
+            }
+        }
+
+        /// <summary>
         /// 差集
         /// </summary>
         /// <param name="A"></param>
@@ -273,78 +302,69 @@ namespace SudokuProject.SudokuProject
         /// </summary>
         public void change()
         {
-            int t = 0;
-            byte[] by = new byte[200];
+            change1();
+
             for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    if (j == 3) by[t++] = (byte)(sudoku[i, j + 2] + 48);
-                    else if (j == 5) by[t++] = (byte)(sudoku[i, j - 2] + 48);
-                    else by[t++] = (byte)(sudoku[i, j]+48);
-                    by[t++] = (byte)' ';
+                    if (j == 3) sudoku2[i, j] = sudoku[i, j + 2];
+                    else if (j == 5) sudoku2[i, j] = sudoku[i, j - 2];
+                    else sudoku2[i, j] = sudoku[i, j];
                 }
-                by[t++] = (byte)'\r';
-                by[t++] = (byte)'\n';
             }
-            by[t++] = (byte)'\r';
-            by[t++] = (byte)'\n';
-            f.Write(by, 0, t);
+            PrintResultFile2();
             n++;
             if (n >= N) return;
+            change2();
 
-            t = 0;
+
             for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    if (j == 6) by[t++] = (byte)(sudoku[i, j + 2] + 48);
-                    else if (j == 8) by[t++] = (byte)(sudoku[i, j - 2] + 48);
-                    else by[t++] = (byte)(sudoku[i, j] + 48);
-                    by[t++] = (byte)' ';
+                    if (j == 6) sudoku2[i, j] = sudoku[i, j + 2];
+                    else if (j == 8) sudoku2[i, j] = sudoku[i, j - 2];
+                    else sudoku2[i, j] = sudoku[i, j];
                 }
-                by[t++] = (byte)'\r';
-                by[t++] = (byte)'\n';
             }
-            by[t++] = (byte)'\r';
-            by[t++] = (byte)'\n';
-            f.Write(by, 0, t);
+            PrintResultFile2();
             n++;
             if (n >= N) return;
+            change2();
 
-            t = 0;
             for (int i = 0; i < 9; i++)
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    if (i == 3) by[t++] = (byte)(sudoku[i + 2, j] + 48);
-                    else if (i == 5) by[t++] = (byte)(sudoku[i - 2, j] + 48);
-                    else by[t++] = (byte)(sudoku[i, j] + 48);
-                    by[t++] = (byte)' ';
+                    if (i == 3) sudoku2[i, j] = sudoku[i + 2, j];
+                    else if (i == 5) sudoku2[i, j] = sudoku[i - 2, j];
+                    else sudoku2[i, j] = sudoku[i, j];
                 }
-                by[t++] = (byte)'\r';
-                by[t++] = (byte)'\n';
             }
-            by[t++] = (byte)'\r';
-            by[t++] = (byte)'\n';
-            f.Write(by, 0, t);
+            PrintResultFile2();
             n++;
             if (n >= N) return;
+            change2();
+        }
 
+        public void change1()
+        {
             for (int i = 0; i < 7; i++)
             {
                 for (int j = i + 1; j < 8; j++)
                 {
-                    t = 0;
+                    int t = 0;
+                    byte[] by = new byte[200];
                     int aNum = changes[i];
                     int bNum = changes[j];
                     for (int x = 0; x < 9; x++)
                     {
                         for (int y = 0; y < 9; y++)
                         {
-                            if (sudoku[x, y] == aNum) by[t++] = (byte)(bNum+48);
-                            else if (sudoku[x, y] == bNum) by[t++] = (byte)(aNum +48);
-                            else by[t++] = (byte)(sudoku[x, y]+48);
+                            if (sudoku[x, y] == aNum) by[t++] = (byte)(bNum + 48);
+                            else if (sudoku[x, y] == bNum) by[t++] = (byte)(aNum + 48);
+                            else by[t++] = (byte)(sudoku[x, y] + 48);
                             by[t++] = (byte)' ';
                         }
                         by[t++] = (byte)'\r';
@@ -357,9 +377,39 @@ namespace SudokuProject.SudokuProject
                     if (n >= N) return;
                 }
             }
-
         }
 
-
+        public void change2()
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                for (int j = i + 1; j < 8; j++)
+                {
+                    int t = 0;
+                    byte[] by = new byte[200];
+                    int aNum = changes[i];
+                    int bNum = changes[j];
+                    for (int x = 0; x < 9; x++)
+                    {
+                        for (int y = 0; y < 9; y++)
+                        {
+                            if (sudoku2[x, y] == aNum) by[t++] = (byte)(bNum + 48);
+                            else if (sudoku2[x, y] == bNum) by[t++] = (byte)(aNum + 48);
+                            else by[t++] = (byte)(sudoku2[x, y] + 48);
+                            by[t++] = (byte)' ';
+                        }
+                        by[t++] = (byte)'\r';
+                        by[t++] = (byte)'\n';
+                    }
+                    by[t++] = (byte)'\r';
+                    by[t++] = (byte)'\n';
+                    f.Write(by, 0, t);
+                    n++;
+                    if (n >= N) return;
+                }
+            }
+        }
     }
+
+    
 }

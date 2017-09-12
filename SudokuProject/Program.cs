@@ -41,5 +41,5 @@ namespace SudokuProject.SudokuProject
             }
             else Console.WriteLine("error:请输入正整数");
         }
-        }
     }
+}

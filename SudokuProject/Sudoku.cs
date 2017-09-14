@@ -303,6 +303,7 @@ namespace SudokuProject.SudokuProject
         public void change()
         {
             change1();
+            if (n >= N) return;
 
             for (int i = 0; i < 9; i++)
             {
@@ -317,6 +318,7 @@ namespace SudokuProject.SudokuProject
             n++;
             if (n >= N) return;
             change2();
+            if (n >= N) return;
 
 
             for (int i = 0; i < 9; i++)
@@ -332,6 +334,7 @@ namespace SudokuProject.SudokuProject
             n++;
             if (n >= N) return;
             change2();
+            if (n >= N) return;
 
             for (int i = 0; i < 9; i++)
             {
@@ -346,6 +349,7 @@ namespace SudokuProject.SudokuProject
             n++;
             if (n >= N) return;
             change2();
+            if (n >= N) return;
         }
 
         public void change1()
@@ -410,6 +414,4 @@ namespace SudokuProject.SudokuProject
             }
         }
     }
-
-    
 }
